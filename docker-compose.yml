@@ -1,0 +1,20 @@
+version: "3"
+services:
+  simple-html:
+    container_name: simple-html
+    image: nginx
+    networks:
+      - proxy
+    ports:
+      - 8023:80
+    volumes:
+      - ./:/usr/share/nginx/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.simple-html-secure.entrypoints=websecure"
+      - "traefik.http.routers.simple-html-secure.rule=Host(`simple-html.yourdomain.com`)"
+    restart: unless-stopped
+networks:
+  proxy:
+    external: true
